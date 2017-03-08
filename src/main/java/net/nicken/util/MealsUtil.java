@@ -1,7 +1,7 @@
 package net.nicken.util;
 
 import net.nicken.model.Meal;
-import net.nicken.model.MealWithExceed;
+import net.nicken.to.MealWithExceed;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -29,21 +29,17 @@ public class MealsUtil {
 
     public static void main(String[] args) {
 //        MEALS.forEach(meal -> System.out.println(meal));
-        getWithExceed(MEALS, DEFAULT_CALORIES_PER_DAY).forEach(m -> System.out.println(m));
+        getWithExceeded(MEALS, DEFAULT_CALORIES_PER_DAY).forEach(m -> System.out.println(m));
     }
 
-    public static Collection<MealWithExceed> getWithExceed(Collection<Meal> meals, int calories){
+    public static List<MealWithExceed> getWithExceeded(Collection<Meal> meals, int calories){
         return getFilteredWithExceed(meals, LocalTime.MIN, LocalTime.MAX, calories);
     }
 
-    private static Collection<MealWithExceed> getFilteredWithExceed(Collection<Meal> meals, LocalTime startTime, LocalTime endTime, int calories){
+    public static List<MealWithExceed> getFilteredWithExceed(Collection<Meal> meals, LocalTime startTime, LocalTime endTime, int calories){
         Map<LocalDate, Integer> map = meals.stream().collect(
                 Collectors.groupingBy(m -> m.getDate(), Collectors.summingInt(m -> m.getCalories()))
         );
-
-        /*for(Map.Entry<LocalDate, Integer> pair: map.entrySet()){
-            System.out.println(pair.getKey()+" "+pair.getValue());
-        }*/
 
         return meals.stream()
                 .filter(m -> DateTimeUtil.isBetweenTime(m.getTime(), startTime, endTime))

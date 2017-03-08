@@ -1,5 +1,6 @@
 package net.nicken.web;
 
+import net.nicken.AuthorizedUser;
 import net.nicken.model.Meal;
 import net.nicken.repository.MealRepository;
 import net.nicken.repository.mock.InMemoryMealRepositoryImpl;
@@ -37,7 +38,7 @@ private static final Logger LOG = LoggerFactory.getLogger(MealServlet.class);
                 request.getParameter("description"),
                 Integer.valueOf(request.getParameter("calories")));
         LOG.info(meal.isNew() ? "Create {}" : "Update {}", meal);
-        repository.save(meal);
+        repository.save(meal, AuthorizedUser.id());
         response.sendRedirect("meals");
     }
 
@@ -48,19 +49,19 @@ private static final Logger LOG = LoggerFactory.getLogger(MealServlet.class);
         if(action == null){
             LOG.info("getAll");
             request.setAttribute("meals",
-                    MealsUtil.getWithExceed(repository.getAll(), MealsUtil.DEFAULT_CALORIES_PER_DAY));
+                    MealsUtil.getWithExceeded(repository.getAll(AuthorizedUser.id()), MealsUtil.DEFAULT_CALORIES_PER_DAY));
             request.getRequestDispatcher("/meals.jsp").forward(request, response);
 
         }else if("delete".equals(action)){
             int id = getId(request);
             LOG.info("Delete {}", id);
-            repository.delete(id);
+            repository.delete(id, AuthorizedUser.id());
             response.sendRedirect("meals");
 
         }else if("create".equals(action) || "update".equals(action)){
             final Meal meal = action.equals("create") ?
                     new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000):
-                    repository.get(getId(request));
+                    repository.get(getId(request), AuthorizedUser.id());
             request.setAttribute("meal", meal);
             request.getRequestDispatcher("meal.jsp").forward(request, response);
         }

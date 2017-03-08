@@ -32,7 +32,7 @@
             </tr>
             </thead>
             <c:forEach items="${meals}" var="meal">
-                <jsp:useBean id="meal" scope="page" type="net.nicken.model.MealWithExceed"/>
+                <jsp:useBean id="meal" scope="page" type="net.nicken.to.MealWithExceed"/>
                 <tr class="${meal.exceed ? 'exceeded' : 'normal'}">
                 <td>
                         <%--${meal.dateTime.toLocalDate()} ${meal.dateTime.toLocalTime()}--%>

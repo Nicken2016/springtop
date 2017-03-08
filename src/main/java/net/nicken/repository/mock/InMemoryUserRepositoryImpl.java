@@ -7,21 +7,26 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 @Repository
 public class InMemoryUserRepositoryImpl implements UserRepository{
-    private static final Logger LOG = LoggerFactory.getLogger(InMemoryUserRepositoryImpl.class);
+
 
     Map<Integer, User> repository = new ConcurrentHashMap<>();
     AtomicInteger counter = new AtomicInteger(0);
 
+    private static final Comparator<User> USER_COMPARATOR = Comparator.comparing(User::getName).thenComparing(User::getEmail);
+
+    public static final int USER_ID = 1;
+    public static final int ADMIN_ID = 2;
+
     @Override
     public User save(User user) {
+        Objects.requireNonNull(user);
         if(user.isNew())
             user.setId(counter.incrementAndGet());
         repository.put(user.getId(), user);
@@ -30,10 +35,7 @@ public class InMemoryUserRepositoryImpl implements UserRepository{
 
     @Override
     public boolean delete(int id) {
-        if(!repository.containsKey(id))
-            return false;
-        repository.remove(id);
-        return true;
+        return repository.remove(id) != null;
     }
 
     @Override
@@ -43,15 +45,18 @@ public class InMemoryUserRepositoryImpl implements UserRepository{
 
     @Override
     public User getByEmail(String email) {
-        Collection<User> users = repository.values();
-        return users.stream()
-                .filter(m -> m.getEmail().equals(email))
-                .findAny().get();
+        Objects.requireNonNull(email);
+        return repository.values().stream()
+                .filter(u -> email.equals(u.getEmail()))
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
     public List<User> getAll() {
-        return (List)repository.values();
+        return repository.values().stream()
+                .sorted(USER_COMPARATOR)
+                .collect(Collectors.toList());
     }
 
 }

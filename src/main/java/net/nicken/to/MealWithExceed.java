@@ -1,4 +1,4 @@
-package net.nicken.model;
+package net.nicken.to;
 
 import java.time.LocalDateTime;
 
