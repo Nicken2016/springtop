@@ -5,8 +5,11 @@ import net.nicken.model.Meal;
 import net.nicken.repository.MealRepository;
 import net.nicken.repository.mock.InMemoryMealRepositoryImpl;
 import net.nicken.util.MealsUtil;
+import net.nicken.web.meal.MealRestController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -20,12 +23,22 @@ import java.util.Objects;
 
 public class MealServlet extends HttpServlet{
 private static final Logger LOG = LoggerFactory.getLogger(MealServlet.class);
-    private MealRepository repository;
+
+//    private MealRepository repository;
+
+    private ConfigurableApplicationContext springContext;
+    private MealRestController mealController;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        repository = new InMemoryMealRepositoryImpl();
+        springContext = new ClassPathXmlApplicationContext("spring/spring-app.xml");
+        mealController = springContext.getBean(MealRestController.class);
+    }
+
+    public void destroy(){
+        springContext.close();
+        super.destroy();
     }
 
     @Override
@@ -33,12 +46,17 @@ private static final Logger LOG = LoggerFactory.getLogger(MealServlet.class);
         request.setCharacterEncoding("UTF-8");
         String id = request.getParameter("id");
 
-        Meal meal = new Meal(id.isEmpty() ? null : Integer.valueOf(id),
+        final Meal meal = new Meal(id.isEmpty() ? null : Integer.valueOf(id),
                 LocalDateTime.parse(request.getParameter("dateTime")),
                 request.getParameter("description"),
                 Integer.valueOf(request.getParameter("calories")));
-        LOG.info(meal.isNew() ? "Create {}" : "Update {}", meal);
-        repository.save(meal, AuthorizedUser.id());
+        if(meal.isNew()){
+            LOG.info("Create {}", meal);
+            mealController.create(meal);
+        }else {
+            LOG.info("Update {}", meal);
+            mealController.update(meal, getId(request));
+        }
         response.sendRedirect("meals");
     }
 
@@ -48,20 +66,19 @@ private static final Logger LOG = LoggerFactory.getLogger(MealServlet.class);
 
         if(action == null){
             LOG.info("getAll");
-            request.setAttribute("meals",
-                    MealsUtil.getWithExceeded(repository.getAll(AuthorizedUser.id()), MealsUtil.DEFAULT_CALORIES_PER_DAY));
+            request.setAttribute("meals", mealController.getAll());
             request.getRequestDispatcher("/meals.jsp").forward(request, response);
 
         }else if("delete".equals(action)){
             int id = getId(request);
             LOG.info("Delete {}", id);
-            repository.delete(id, AuthorizedUser.id());
+            mealController.delete(id);
             response.sendRedirect("meals");
 
         }else if("create".equals(action) || "update".equals(action)){
             final Meal meal = action.equals("create") ?
                     new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000):
-                    repository.get(getId(request), AuthorizedUser.id());
+                    mealController.get(getId(request));
             request.setAttribute("meal", meal);
             request.getRequestDispatcher("meal.jsp").forward(request, response);
         }
