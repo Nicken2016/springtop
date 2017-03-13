@@ -1,16 +1,16 @@
 package net.nicken.repository.mock;
 
-import jdk.nashorn.internal.objects.annotations.Constructor;
-import net.nicken.model.Role;
 import net.nicken.model.User;
 import net.nicken.repository.UserRepository;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -25,9 +25,6 @@ public class InMemoryUserRepositoryImpl implements UserRepository{
     AtomicInteger counter = new AtomicInteger(0);
 
     private static final Comparator<User> USER_COMPARATOR = Comparator.comparing(User::getName).thenComparing(User::getEmail);
-
-    public static final int USER_ID = 1;
-    public static final int ADMIN_ID = 2;
 
     @Override
     public User save(User user) {
