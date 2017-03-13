@@ -12,9 +12,11 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
 @Repository
 public class InMemoryUserRepositoryImpl implements UserRepository{
-
+    private static final Logger LOG = getLogger(InMemoryUserRepositoryImpl.class);
 
     Map<Integer, User> repository = new ConcurrentHashMap<>();
     AtomicInteger counter = new AtomicInteger(0);
@@ -31,6 +33,14 @@ public class InMemoryUserRepositoryImpl implements UserRepository{
             user.setId(counter.incrementAndGet());
         repository.put(user.getId(), user);
         return user;
+    }
+
+    public void postConstruct(){
+        LOG.info("+++ PostConstruct");
+    }
+
+    public void preDestroy(){
+        LOG.info("+++ PreDestroy");
     }
 
     @Override
