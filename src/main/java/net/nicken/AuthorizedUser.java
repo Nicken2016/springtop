@@ -1,12 +1,13 @@
 package net.nicken;
 
+import net.nicken.model.BaseEntity;
 import net.nicken.model.Role;
 import net.nicken.util.MealsUtil;
 
 import java.util.Set;
 
 public class AuthorizedUser {
-    public static int id = 1;
+    public static int id = BaseEntity.START_SEQ;
 
     public static int id(){
         return id;
