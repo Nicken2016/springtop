@@ -1,4 +1,4 @@
-package net.nicken.web;
+package net.nicken.web.mock;
 
 import net.nicken.UserTestData;
 import net.nicken.model.Role;

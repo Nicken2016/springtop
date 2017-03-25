@@ -4,6 +4,7 @@ import net.nicken.model.User;
 import net.nicken.repository.UserRepository;
 import net.nicken.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
