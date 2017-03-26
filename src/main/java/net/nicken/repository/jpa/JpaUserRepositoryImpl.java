@@ -5,7 +5,9 @@ import net.nicken.repository.UserRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.Query;
 import javax.persistence.EntityManager;
@@ -13,6 +15,7 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
+@Transactional(readOnly = true)
 public class JpaUserRepositoryImpl implements UserRepository {
 
     /*@Autowired
@@ -26,6 +29,7 @@ public class JpaUserRepositoryImpl implements UserRepository {
     private EntityManager em;
 
     @Override
+    @Transactional
     public User save(User user) {
         if(user.isNew()){
             em.persist(user);
@@ -36,12 +40,14 @@ public class JpaUserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    @Transactional
     public boolean delete(int id) {
         /*User ref = em.getReference(User.class, id);
-        em.remove(ref);*/
+        em.remove(ref);
 
         Query query = em.createQuery("DELETE FROM User u WHERE u.id=:id");
-        return query.setParameter("id", id).executeUpdate() != 0;
+        return query.setParameter("id", id).executeUpdate() != 0;*/
+        return em.createNamedQuery(User.DELETE).setParameter("id", id).executeUpdate() != 0;
     }
 
     @Override
@@ -51,11 +57,12 @@ public class JpaUserRepositoryImpl implements UserRepository {
 
     @Override
     public User getByEmail(String email) {
-        return null;
+        List<User> users = em.createNamedQuery(User.BY_EMAIL, User.class).setParameter(1, email).getResultList();
+        return DataAccessUtils.singleResult(users);
     }
 
     @Override
     public List<User> getAll() {
-        return null;
+        return em.createNamedQuery(User.ALL_SORTED, User.class).getResultList();
     }
 }
