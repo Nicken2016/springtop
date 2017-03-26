@@ -2,14 +2,14 @@ package net.nicken.service;
 
 import net.nicken.model.Role;
 import net.nicken.model.User;
-import net.nicken.util.DbPopulator;
 import net.nicken.util.exception.NotFoundException;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Arrays;
@@ -25,18 +25,10 @@ import static org.junit.Assert.*;
 
 })
 @RunWith(SpringJUnit4ClassRunner.class)
-
+@Sql(scripts = "classpath:db/populateDb.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class UserServiceTest {
     @Autowired
     private UserService service;
-
-    @Autowired
-    private DbPopulator dbPopulator;
-
-    @Before
-    public void setUp() throws Exception{
-        dbPopulator.execute();
-    }
 
     @Test
     public void testSave() throws Exception {

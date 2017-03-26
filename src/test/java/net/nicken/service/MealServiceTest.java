@@ -1,14 +1,14 @@
 package net.nicken.service;
 
-import com.sun.org.apache.xerces.internal.impl.xs.identity.Selector;
+
 import net.nicken.model.Meal;
-import net.nicken.util.DbPopulator;
 import net.nicken.util.exception.NotFoundException;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.time.LocalDate;
@@ -25,17 +25,10 @@ import static net.nicken.UserTestData.USER_ID;
 })
 
 @RunWith(SpringJUnit4ClassRunner.class)
+@Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class MealServiceTest {
     @Autowired
     private MealService service;
-
-    @Autowired
-    private DbPopulator dbPopulator;
-
-    @Before
-    public void setUp() throws Exception{
-        dbPopulator.execute();
-    }
 
     @Test
     public void testDelete() throws Exception{
