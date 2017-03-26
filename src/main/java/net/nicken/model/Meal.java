@@ -2,6 +2,8 @@ package net.nicken.model;
 
 
 
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -13,6 +15,9 @@ public class Meal extends BaseEntity {
     private String description;
 
     private int calories;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
 
     public Meal() {
     }
@@ -60,6 +65,13 @@ public class Meal extends BaseEntity {
         return dateTime.toLocalTime();
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     @Override
     public String toString() {
