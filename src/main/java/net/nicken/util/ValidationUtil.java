@@ -4,6 +4,10 @@ import net.nicken.model.BaseEntity;
 import net.nicken.util.exception.NotFoundException;
 
 public class ValidationUtil {
+
+    private ValidationUtil() {
+    }
+
     public static void checkNotFoundWithId(boolean found, int id){
         checkNotFound(found, "id = "+id);
     }
@@ -18,7 +22,9 @@ public class ValidationUtil {
     }
 
     public static void checkNotFound(boolean found, String msg){
-        if(!found) throw new NotFoundException("Not found entity with "+msg);
+        if(!found){
+            throw new NotFoundException("Not found entity with "+msg);
+        }
     }
 
     public static void checkNew(BaseEntity entity){
