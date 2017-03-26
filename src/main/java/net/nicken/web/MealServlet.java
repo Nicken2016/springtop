@@ -3,7 +3,6 @@ package net.nicken.web;
 import net.nicken.AuthorizedUser;
 import net.nicken.model.Meal;
 import net.nicken.repository.MealRepository;
-import net.nicken.repository.mock.InMemoryMealRepositoryImpl;
 import net.nicken.util.DateTimeUtil;
 import net.nicken.util.MealsUtil;
 import net.nicken.web.meal.MealRestController;
