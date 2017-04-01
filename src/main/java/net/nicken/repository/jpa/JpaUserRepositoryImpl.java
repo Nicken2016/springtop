@@ -51,17 +51,20 @@ public class JpaUserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    @Transactional
     public User get(int id) {
         return em.find(User.class, id);
     }
 
     @Override
+    @Transactional
     public User getByEmail(String email) {
         List<User> users = em.createNamedQuery(User.BY_EMAIL, User.class).setParameter(1, email).getResultList();
         return DataAccessUtils.singleResult(users);
     }
 
     @Override
+    @Transactional
     public List<User> getAll() {
         return em.createNamedQuery(User.ALL_SORTED, User.class).getResultList();
     }
