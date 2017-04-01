@@ -1,5 +1,6 @@
 package net.nicken.service;
 
+import net.nicken.Profiles;
 import net.nicken.model.Role;
 import net.nicken.model.User;
 import net.nicken.util.exception.NotFoundException;
@@ -7,6 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
@@ -26,6 +28,7 @@ import static org.junit.Assert.*;
 })
 @RunWith(SpringJUnit4ClassRunner.class)
 @Sql(scripts = "classpath:db/populateDb.sql", config = @SqlConfig(encoding = "UTF-8"))
+@ActiveProfiles(Profiles.ACTIVE_DB)
 public class UserServiceTest {
     @Autowired
     private UserService service;
