@@ -3,6 +3,7 @@ package net.nicken.model;
 import javax.persistence.*;
 
 @MappedSuperclass
+// http://stackoverflow.com/questions/594597/hibernate-annotations-which-is-better-field-or-property-access
 @Access(AccessType.FIELD)
 public class BaseEntity {
 
@@ -11,6 +12,7 @@ public class BaseEntity {
     @Id
     @SequenceGenerator(name = "global_seq", sequenceName = "global_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "global_seq")
+    @Access(value = AccessType.PROPERTY)
     protected Integer id;
 
     public BaseEntity() {
@@ -29,7 +31,7 @@ public class BaseEntity {
     }
 
     public boolean isNew() {
-        return this.id == null;
+        return getId() == null;
     }
 
     @Override
@@ -42,11 +44,11 @@ public class BaseEntity {
         }
 
         BaseEntity that = (BaseEntity) o;
-        return id != null && id.equals(that.id);
+        return getId() != null && getId().equals(that.getId());
     }
 
     @Override
     public int hashCode() {
-        return (id == null) ? 0 : id;
+        return (getId() == null) ? 0 : getId();
     }
 }
