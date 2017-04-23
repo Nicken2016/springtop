@@ -22,16 +22,6 @@
         <jdbc:script encoding="utf-8" location="classpath:db/populateDB.sql"/>
     </jdbc:initialize-database>
 
-    <!--&lt;!&ndash;no pooling&ndash;&gt;
-    <bean id="dataSource"
-          class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="${database.driverClassName}"/>
-        <property name="url" value="${database.url}"/>
-        <property name="username" value="${database.username}"/>
-        <property name="password" value="${database.password}"/>
-    </bean>
--->
-
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
           p:dataSource-ref="dataSource"
           p:packagesToScan="net.nicken.**.model">
@@ -52,7 +42,6 @@
         </property>
     </bean>
 
-    <!--<tx:annotation-driven/>-->
     <tx:annotation-driven/>
     <!--Transaction manager for a single JPA EntityManagerFactory (alternative to JTA)-->
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"
@@ -69,8 +58,8 @@
     -->
 
     <beans profile="hsqldb">
-        <!--no pool-->
         <context:property-placeholder location="classpath:db/hsqldb.properties" system-properties-mode="OVERRIDE"/>
+        <!--no pooling-->
         <bean id="dataSource"
               class="org.springframework.jdbc.datasource.DriverManagerDataSource"
               p:driverClassName="org.hsqldb.jdbcDriver"

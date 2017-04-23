@@ -150,6 +150,9 @@
                     <version>${tomcat.version}</version>
                 </dependency>
             </dependencies>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
         </profile>
     </profiles>
 

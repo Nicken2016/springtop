@@ -3,6 +3,8 @@ package net.nicken.repository.jpa;
 import net.nicken.model.Meal;
 import net.nicken.model.User;
 import net.nicken.repository.MealRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +16,7 @@ import java.util.Collection;
 @Repository
 @Transactional(readOnly = true)
 public class JpaMealRepositoryImpl implements MealRepository {
+private static final Logger LOG = LoggerFactory.getLogger(JpaMealRepositoryImpl.class);
 
     @PersistenceContext
     private EntityManager em;
@@ -22,7 +25,7 @@ public class JpaMealRepositoryImpl implements MealRepository {
     @Override
     @Transactional
     public Meal save(Meal meal, int userId) {
-        if(meal.isNew()&& get(meal.getId(), userId) == null){
+        if(!meal.isNew()&& get(meal.getId(), userId) == null){
             return null;
         }
         meal.setUser(em.getReference(User.class, userId));
@@ -63,8 +66,6 @@ public class JpaMealRepositoryImpl implements MealRepository {
                 .setParameter("userId", userId)
                 .setParameter("startDate", startDate)
                 .setParameter("endDate", endDate).getResultList();
-
-
 
     }
 }
