@@ -4,6 +4,7 @@ import net.nicken.Profiles;
 import net.nicken.model.Role;
 import net.nicken.model.User;
 import net.nicken.util.exception.NotFoundException;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,11 @@ import static org.junit.Assert.*;
 public class UserServiceTest {
     @Autowired
     private UserService service;
+
+    @Before
+    public void setUp() throws Exception{
+        service.evictCache();
+    }
 
     @Test
     public void testSave() throws Exception {

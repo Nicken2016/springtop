@@ -4,9 +4,11 @@ import net.nicken.model.User;
 import net.nicken.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public class DataJpaUserRepositoryImpl implements UserRepository{
     private static final Sort SORT_NAME_EMAIL = new Sort("name", "email");
 

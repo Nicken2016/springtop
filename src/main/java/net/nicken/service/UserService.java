@@ -19,5 +19,7 @@ public interface UserService {
 
     public void update(User user);
 
+    public void evictCache();
+
 
 }
