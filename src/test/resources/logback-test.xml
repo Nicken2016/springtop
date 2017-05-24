@@ -6,7 +6,7 @@
         </encoder>
     </appender>
 
-    <logger name="org.springframework.jdbc" level="debug"/>
+    <!--<logger name="org.springframework.jdbc" level="debug"/>-->
     <logger name="net.nicken" level="debug"/>
 
     <root level="WARN">
