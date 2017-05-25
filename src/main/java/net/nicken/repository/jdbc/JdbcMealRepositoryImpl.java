@@ -1,8 +1,10 @@
 package net.nicken.repository.jdbc;
 
+import net.nicken.Profiles;
 import net.nicken.model.Meal;
 import net.nicken.repository.MealRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -13,13 +15,16 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 
+import javax.annotation.PreDestroy;
 import javax.sql.DataSource;
+import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
-@Repository
-public class JdbcMealRepositoryImpl implements MealRepository{
+
+public abstract class JdbcMealRepositoryImpl<T> implements MealRepository{
 
     private static final RowMapper<Meal> ROW_MAPPER = BeanPropertyRowMapper.newInstance(Meal.class);
 
@@ -31,11 +36,31 @@ public class JdbcMealRepositoryImpl implements MealRepository{
 
     private SimpleJdbcInsert insertMeal;
 
+    protected abstract T toDbDateTime(LocalDateTime ldt);
+
     @Autowired
-    public JdbcMealRepositoryImpl(DataSource dataSource){
+    private void setDataSource(DataSource dataSource){
         this.insertMeal = new SimpleJdbcInsert(dataSource)
                 .withTableName("meals")
                 .usingGeneratedKeyColumns("id");
+    }
+
+    @Repository
+    @Profile(Profiles.POSTGRES)
+    public static class Java8JdbcMealRepositoryImpl extends JdbcMealRepositoryImpl<LocalDateTime>{
+        @Override
+        protected LocalDateTime toDbDateTime(LocalDateTime ldt){
+            return ldt;
+        }
+    }
+
+    @Repository
+    @Profile(Profiles.HSQLDB)
+    public static class TimestampJdbcMealRepositoryImpl extends JdbcMealRepositoryImpl<Timestamp>{
+        @Override
+        protected Timestamp toDbDateTime(LocalDateTime ldt){
+            return Timestamp.valueOf(ldt);
+        }
     }
 
     @Override
@@ -44,7 +69,7 @@ public class JdbcMealRepositoryImpl implements MealRepository{
                 .addValue("id", meal.getId())
                 .addValue("description", meal.getDescription())
                 .addValue("calories", meal.getCalories())
-                .addValue("date_time", meal.getDateTime())
+                .addValue("date_time", toDbDateTime(meal.getDateTime()))
                 .addValue("user_id", userId);
         if(meal.isNew()){
             Number newId = insertMeal.executeAndReturnKey(map);
@@ -81,6 +106,6 @@ public class JdbcMealRepositoryImpl implements MealRepository{
     @Override
     public Collection<Meal> getBetween(LocalDateTime startDate, LocalDateTime endDate, int userId) {
         return jdbcTemplate.query("SELECT * FROM meals WHERE user_id=?  AND date_time BETWEEN  ? AND ? ORDER BY date_time DESC",
-                ROW_MAPPER, userId, startDate, endDate);
+                ROW_MAPPER, userId, toDbDateTime(startDate), toDbDateTime(endDate));
     }
 }

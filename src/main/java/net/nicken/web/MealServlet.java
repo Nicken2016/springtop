@@ -1,6 +1,7 @@
 package net.nicken.web;
 
 import net.nicken.AuthorizedUser;
+import net.nicken.Profiles;
 import net.nicken.model.Meal;
 import net.nicken.repository.MealRepository;
 import net.nicken.util.DateTimeUtil;
@@ -26,15 +27,15 @@ import java.util.Objects;
 public class MealServlet extends HttpServlet{
 private static final Logger LOG = LoggerFactory.getLogger(MealServlet.class);
 
-//    private MealRepository repository;
-
-    private ConfigurableApplicationContext springContext;
+    private ClassPathXmlApplicationContext springContext;
     private MealRestController mealController;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        springContext = new ClassPathXmlApplicationContext("spring/spring-app.xml", "spring/spring-db.xml");
+        springContext = new ClassPathXmlApplicationContext(new String[]{"spring/spring-app.xml", "spring/spring-db.xml"}, false);
+        springContext.getEnvironment().setActiveProfiles(Profiles.ACTIVE_DB, Profiles.DB_IMPLEMENTATION);
+        springContext.refresh();
         mealController = springContext.getBean(MealRestController.class);
     }
 
