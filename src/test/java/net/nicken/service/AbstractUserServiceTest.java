@@ -1,36 +1,24 @@
 package net.nicken.service;
 
-import net.nicken.Profiles;
 import net.nicken.model.Role;
 import net.nicken.model.User;
 import net.nicken.util.exception.NotFoundException;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
 import static net.nicken.UserTestData.*;
-import static org.junit.Assert.*;
 
-@ContextConfiguration({
-        "classpath:spring/spring-app.xml",
-        "classpath:spring/spring-db.xml",
 
-})
-@RunWith(SpringJUnit4ClassRunner.class)
-@Sql(scripts = "classpath:db/populateDb.sql", config = @SqlConfig(encoding = "UTF-8"))
-@ActiveProfiles(Profiles.ACTIVE_DB)
-public class UserServiceTest {
+
+public abstract class AbstractUserServiceTest extends AbstractServiceTest{
+
     @Autowired
     private UserService service;
 

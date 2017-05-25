@@ -32,6 +32,7 @@
 
     <beans profile="postgres">
         <context:property-placeholder location="classpath:db/postgres.properties" system-properties-mode="OVERRIDE"/>
+
         <bean id="dataSource"
               class="org.apache.tomcat.jdbc.pool.DataSource"
               p:driverClassName="org.postgresql.Driver"
@@ -53,7 +54,7 @@
     </beans>
 
 
-    <beans profile="jpa, datajpa">
+    <beans profile="jpa,datajpa">
         <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
             p:dataSource-ref="dataSource"
             p:packagesToScan="net.nicken.**.model">
