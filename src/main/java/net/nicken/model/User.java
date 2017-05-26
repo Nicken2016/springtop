@@ -10,6 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Digits;
 import java.util.Date;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Set;
 
 @NamedQueries({
@@ -52,6 +53,10 @@ public class User extends NamedEntity{
     @Range(min = 10, max = 10000)
     private int caloriesPerDay = MealsUtil.DEFAULT_CALORIES_PER_DAY;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @OrderBy("dateTime DESC")
+    protected List<Meal> meals;
+
     public User() {
     }
 
@@ -82,6 +87,10 @@ public class User extends NamedEntity{
 
     public String getPassword() {
         return password;
+    }
+
+    public List<Meal> getMeals(){
+        return meals;
     }
 
     public void setPassword(String password) {

@@ -2,6 +2,7 @@ package net.nicken.service;
 
 import net.nicken.model.User;
 import net.nicken.repository.UserRepository;
+import net.nicken.util.ValidationUtil;
 import net.nicken.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -61,5 +62,10 @@ public class UserServiceImpl implements UserService{
     @Override
     public void evictCache() {
 
+    }
+
+    @Override
+    public User getWithMeals(int id) {
+        return ValidationUtil.checkNotFoundWithId(repository.getWithMeals(id), id);
     }
 }

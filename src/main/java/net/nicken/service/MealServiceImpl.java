@@ -2,6 +2,7 @@ package net.nicken.service;
 
 import net.nicken.model.Meal;
 import net.nicken.repository.MealRepository;
+import net.nicken.util.ValidationUtil;
 import net.nicken.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,5 +52,10 @@ public class MealServiceImpl implements MealService {
     @Override
     public Meal save(Meal meal, int userId) {
         return repository.save(meal, userId);
+    }
+
+    @Override
+    public Meal getWithUser(int id, int userId) {
+        return ValidationUtil.checkNotFoundWithId(repository.getWithUser(id, userId), id);
     }
 }

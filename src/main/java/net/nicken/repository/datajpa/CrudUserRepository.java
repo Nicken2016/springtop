@@ -1,7 +1,6 @@
 package net.nicken.repository.datajpa;
 
 import net.nicken.model.User;
-import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -16,8 +15,8 @@ public interface CrudUserRepository extends JpaRepository<User, Integer>{
 
     @Transactional
     @Modifying
-    @Query("DELETE FROM User u WHERE u.id = :id")
-    int delete (@Param("id")int id);
+    @Query("DELETE FROM User u WHERE u.id=:id")
+    int delete(@Param("id") int id);
 
     @Override
     @Transactional
@@ -30,4 +29,7 @@ public interface CrudUserRepository extends JpaRepository<User, Integer>{
     List<User> findAll(Sort sort);
 
     User getByEmail(String email);
+
+    @Query("SELECT u FROM User u LEFT JOIN FETCH u.meals WHERE u.id = ?1")
+    User getWithMeals(int id);
 }
