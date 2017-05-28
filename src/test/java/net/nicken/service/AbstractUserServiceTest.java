@@ -2,6 +2,7 @@ package net.nicken.service;
 
 import net.nicken.model.Role;
 import net.nicken.model.User;
+import net.nicken.repository.JpaUtil;
 import net.nicken.util.exception.NotFoundException;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,9 +24,13 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest{
     @Autowired
     protected UserService service;
 
+    @Autowired
+    protected JpaUtil jpaUtil;
+
     @Before
     public void setUp() throws Exception{
         service.evictCache();
+        jpaUtil.clear2ndLevelHibernateCache();
     }
 
     @Test
