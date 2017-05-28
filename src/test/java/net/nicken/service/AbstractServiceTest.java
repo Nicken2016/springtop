@@ -1,6 +1,7 @@
 package net.nicken.service;
 
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.Stopwatch;
@@ -17,6 +18,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.concurrent.TimeUnit;
 
 import static net.nicken.Profiles.ACTIVE_DB;
+import static org.hamcrest.CoreMatchers.instanceOf;
 
 @ContextConfiguration({
         "classpath:spring/spring-app.xml",
@@ -59,5 +61,24 @@ abstract public class AbstractServiceTest {
                 "---------------------------------\n");
 
         results.setLength(0);
+    }
+
+    public static <T extends Throwable> void validateRootCause(Runnable runnable, Class<T> exceptionClass){
+        try{
+            runnable.run();
+            Assert.fail("Expected "+ exceptionClass.getName());
+        }catch (Exception e){
+            Assert.assertThat(getRootCause(e), instanceOf(exceptionClass));
+        }
+    }
+
+    public static Throwable getRootCause(Throwable t){
+        Throwable result = t;
+        Throwable cause;
+
+        while (null != (cause = result.getCause()) && (result != cause)){
+            result = cause;
+        }
+    return result;
     }
 }

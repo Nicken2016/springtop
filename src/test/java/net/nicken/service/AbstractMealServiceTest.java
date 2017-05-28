@@ -7,10 +7,12 @@ import net.nicken.util.exception.NotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.validation.ConstraintViolationException;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.Arrays;
 
+import static java.time.LocalDateTime.of;
 import static net.nicken.MealTestData.*;
 import static net.nicken.UserTestData.ADMIN_ID;
 import static net.nicken.UserTestData.USER_ID;
@@ -69,5 +71,13 @@ import static net.nicken.UserTestData.USER_ID;
     public void testGetAll() throws Exception {
         MATCHER.assertCollectionEquals(Arrays.asList(MEAL3, MEAL2, MEAL1),
                 service.getBetweenDates(LocalDate.of(2015, Month.MAY, 30), LocalDate.of(2015, Month.MAY, 30), USER_ID));
+    }
+
+    @Test
+    public void testValidation() throws Exception {
+        validateRootCause(() -> service.save(new Meal(null, of(2015, Month.JUNE, 1, 18, 0), "  ", 300), USER_ID), ConstraintViolationException.class);
+        validateRootCause(() -> service.save(new Meal(null, null, "Description", 300), USER_ID), ConstraintViolationException.class);
+        validateRootCause(() -> service.save(new Meal(null, of(2015, Month.JUNE, 1, 18, 0), "Description", 9), USER_ID), ConstraintViolationException.class);
+        validateRootCause(() -> service.save(new Meal(null, of(2015, Month.JUNE, 1, 18, 0), "Description", 5001), USER_ID), ConstraintViolationException.class);
     }
 }
