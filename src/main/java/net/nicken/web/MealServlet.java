@@ -11,6 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -27,24 +29,15 @@ import java.util.Objects;
 public class MealServlet extends HttpServlet{
 private static final Logger LOG = LoggerFactory.getLogger(MealServlet.class);
 
-    private ClassPathXmlApplicationContext springContext;
     private MealRestController mealController;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        springContext = new ClassPathXmlApplicationContext(new String[]{"spring/spring-app.xml", "spring/spring-db.xml"}, false);
-        springContext.getEnvironment().setActiveProfiles(Profiles.getActiveDbProfile(), Profiles.DB_IMPLEMENTATION);
-        springContext.refresh();
+        WebApplicationContext springContext = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
         mealController = springContext.getBean(MealRestController.class);
     }
 
-    public void destroy(){
-        springContext.close();
-        super.destroy();
-    }
-
-    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
