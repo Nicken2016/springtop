@@ -26,6 +26,7 @@
     </appender>
 
     <logger name="net.nicken" level="debug"/>
+    <logger name="org.springframework.web.servlet" level="debug"/>
 
     <root level="info">
         <appender-ref ref="file"/>
