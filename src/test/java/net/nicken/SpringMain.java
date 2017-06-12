@@ -1,6 +1,7 @@
 package net.nicken;
 
 
+import net.nicken.model.User;
 import net.nicken.to.MealWithExceed;
 import net.nicken.web.meal.MealRestController;
 import net.nicken.web.user.AdminRestController;
@@ -12,20 +13,19 @@ import java.time.Month;
 import java.util.Arrays;
 import java.util.List;
 
-import static net.nicken.UserTestData.USER_ID;
-
 public class SpringMain {
 
     public static void main(String[] args) {
 
           try(GenericXmlApplicationContext appCtx = new GenericXmlApplicationContext()){
             appCtx.getEnvironment().setActiveProfiles(Profiles.getActiveDbProfile(), Profiles.DB_IMPLEMENTATION);
-            appCtx.load("spring/spring-app.xml", "spring/spring-db.xml");
+            appCtx.load("spring/spring-app.xml", "spring/mock.xml");
             appCtx.refresh();
 
             System.out.println("Bean definition names: "+Arrays.toString(appCtx.getBeanDefinitionNames()));
             AdminRestController adminUserController = appCtx.getBean(AdminRestController.class);
-            adminUserController.get(USER_ID);
+
+            List<User> users = adminUserController.getAll();
             System.out.println();
 
             MealRestController mealController = appCtx.getBean(MealRestController.class);

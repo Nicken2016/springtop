@@ -1,6 +1,7 @@
 package net.nicken.service;
 
 import net.nicken.ActiveDbProfileResolver;
+import net.nicken.Profiles;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Rule;
@@ -10,6 +11,8 @@ import org.junit.runner.Description;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
@@ -36,6 +39,9 @@ abstract public class AbstractServiceTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
+    @Autowired
+    public Environment env;
+
     @Rule
     public Stopwatch stopwatch = new Stopwatch() {
         @Override
@@ -47,7 +53,6 @@ abstract public class AbstractServiceTest {
     };
 
     @AfterClass
-
     public static void printResult() {
 
         LOG.info("\n---------------------------------" +
@@ -61,6 +66,11 @@ abstract public class AbstractServiceTest {
                 "---------------------------------\n");
 
         results.setLength(0);
+    }
+
+    public boolean isJpaBased(){
+//        return Array.stream(env.getActiveProfileas()).anyMatch(p -> Profiles.JPA.equals(p) || Profiles.DATAJPA.equals(p));
+        return env.acceptsProfiles(Profiles.JPA, Profiles.DATAJPA);
     }
 
     public static <T extends Throwable> void validateRootCause(Runnable runnable, Class<T> exceptionClass){
