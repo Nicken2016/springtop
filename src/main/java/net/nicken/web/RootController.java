@@ -1,7 +1,9 @@
 package net.nicken.web;
 
 import net.nicken.AuthorizedUser;
+import net.nicken.service.MealService;
 import net.nicken.service.UserService;
+import net.nicken.util.MealsUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,7 +16,11 @@ import javax.servlet.http.HttpServletRequest;
 public class RootController {
 
     @Autowired
-    private UserService service;
+    private UserService userService;
+
+    @Autowired
+    private MealService mealService;
+
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String root(){
@@ -23,7 +29,7 @@ public class RootController {
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     public String users(Model model){
-        model.addAttribute("users", service.getAll());
+        model.addAttribute("users", userService.getAll());
         return "users";
     }
 
@@ -32,5 +38,12 @@ public class RootController {
         int userId = Integer.valueOf(request.getParameter("userId"));
         AuthorizedUser.setId((userId));
         return "redirect:meals";
+    }
+
+    @RequestMapping(value="/meals", method = RequestMethod.GET)
+    public String meals(Model model){
+        model.addAttribute("meals",
+                MealsUtil.getWithExceeded(mealService.getAll(AuthorizedUser.id()), AuthorizedUser.getCaloriesPerDay()));
+        return "meals";
     }
 }
