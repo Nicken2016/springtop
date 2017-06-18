@@ -37,6 +37,9 @@
         <!--Tools-->
         <ehcache.version>2.10.3</ehcache.version>
 
+        <!--JSON-->
+        <jackon-json.version>2.8.6</jackon-json.version>
+
     </properties>
 
     <version>1.0-SNAPSHOT</version>
@@ -171,6 +174,13 @@
             <groupId>net.sf.ehcache</groupId>
             <artifactId>ehcache</artifactId>
             <version>2.10.3</version>
+        </dependency>
+
+        <!--JSON-->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackon-json.version}</version>
         </dependency>
     </dependencies>
 
