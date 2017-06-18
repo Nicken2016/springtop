@@ -7,8 +7,8 @@ import net.nicken.util.MealsUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -22,25 +22,25 @@ public class RootController {
     private MealService mealService;
 
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @GetMapping("/")
     public String root(){
         return "index";
     }
 
-    @RequestMapping(value = "/users", method = RequestMethod.GET)
+    @GetMapping("/users")
     public String users(Model model){
         model.addAttribute("users", userService.getAll());
         return "users";
     }
 
-    @RequestMapping(value = "/users", method = RequestMethod.POST)
+    @PostMapping("/users")
     public String setUser(HttpServletRequest request){
         int userId = Integer.valueOf(request.getParameter("userId"));
         AuthorizedUser.setId((userId));
         return "redirect:meals";
     }
 
-    @RequestMapping(value="/meals", method = RequestMethod.GET)
+    @GetMapping("/meals")
     public String meals(Model model){
         model.addAttribute("meals",
                 MealsUtil.getWithExceeded(mealService.getAll(AuthorizedUser.id()), AuthorizedUser.getCaloriesPerDay()));
