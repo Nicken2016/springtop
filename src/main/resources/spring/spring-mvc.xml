@@ -8,7 +8,16 @@
        http://www.springframework.org/schema/mvc 
        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-    <mvc:annotation-driven/>
+    <bean class="net.nicken.web.json.JacksonObjectMapper" id="objectMapper" factory-method="getMapper"/>
+
+    <mvc:annotation-driven>
+        <mvc:message-converters>
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                <property name="objectMapper" ref="objectMapper"/>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
 
     <context:component-scan base-package="net.nicken.**.web"/>
 
