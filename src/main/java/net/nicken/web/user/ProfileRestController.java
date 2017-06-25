@@ -7,23 +7,29 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(ProfileRestController.REST_URI)
+@RequestMapping(ProfileRestController.REST_URL)
 public class ProfileRestController extends AbstractUserController{
 
-    static final String REST_URI = "/rest/profile";
+    static final String REST_URL = "/rest/profile";
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public User get(int id) {
+    public User get() {
         return super.get(AuthorizedUser.id());
     }
 
     @DeleteMapping
-    public void delete(int id) {
+    public void delete() {
         super.delete(AuthorizedUser.id());
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void update(@RequestBody User user, @PathVariable("id") int id) {
+    public void update(@RequestBody User user) {
         super.update(user, AuthorizedUser.id());
     }
+
+    @GetMapping(value = "/text")
+    public String testUTF(){
+        return "Русский текст";
+    }
+
 }

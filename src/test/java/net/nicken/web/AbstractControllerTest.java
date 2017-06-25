@@ -1,6 +1,7 @@
 package net.nicken.web;
 
 import net.nicken.AllActiveProfileResolver;
+import net.nicken.repository.JpaUtil;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,10 +39,13 @@ public class AbstractControllerTest {
         CHARACTER_ENCODING_FILTER.setForceEncoding(true);
     }
 
+    @Autowired
+    private JpaUtil jpaUtil;
+
     protected MockMvc mockMvc;
 
     @Autowired
-    UserService userService;
+    protected UserService userService;
 
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -57,5 +61,6 @@ public class AbstractControllerTest {
     @Before
     public void setUp(){
         userService.evictCache();
+        jpaUtil.clear2ndLevelHibernateCache();
     }
 }
