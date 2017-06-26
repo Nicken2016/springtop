@@ -2,6 +2,8 @@ package net.nicken.web;
 
 import org.junit.Test;
 
+import static net.nicken.MealTestData.MEAL1;
+import static net.nicken.MealTestData.MEAL1_ID;
 import static net.nicken.UserTestData.USER;
 import static net.nicken.model.BaseEntity.START_SEQ;
 import static org.hamcrest.Matchers.*;
@@ -28,5 +30,20 @@ public class RootControllerTest extends AbstractControllerTest{
                 )));
 
 
+    }
+
+    @Test
+    public void testMeals() throws Exception{
+        mockMvc.perform(get("/meals"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(view().name("meals"))
+                .andExpect(forwardedUrl("/WEB-INF/jsp/meals.jsp"))
+                .andExpect(model().attribute("meals", hasSize(6)))
+                .andExpect(model().attribute("meals", hasItem(
+                        allOf(hasProperty("id", is(MEAL1_ID)),
+                                hasProperty("description", is(MEAL1.getDescription()))
+                        )
+                )));
     }
 }
