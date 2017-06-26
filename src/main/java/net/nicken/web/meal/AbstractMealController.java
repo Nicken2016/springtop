@@ -15,6 +15,9 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
+import static net.nicken.util.ValidationUtil.checkIdConsistent;
+import static net.nicken.util.ValidationUtil.checkNew;
+
 public abstract class AbstractMealController {
 private static final Logger LOG = LoggerFactory.getLogger(AbstractMealController.class);
 
@@ -40,14 +43,14 @@ public List<MealWithExceed> getAll(){
 }
 
 public void update(Meal meal, int id){
-    meal.setId(id);
+    checkIdConsistent(meal, id);
     int userId = AuthorizedUser.id();
     LOG.info("update {} for User {}", meal, userId);
     service.update(meal, userId);
 }
 
 public Meal create(Meal meal){
-    meal.setId(null);
+    checkNew(meal);
     int userId = AuthorizedUser.id();
     LOG.info("create {} for User{}", meal, userId);
     return service.save(meal, userId);
@@ -58,9 +61,10 @@ public List<MealWithExceed> getBetween(LocalDate startDate, LocalTime startTime,
     LOG.info("getNetween dates {} - {} for time {} = {} for User {}", startDate, endDate, startTime, endTime, userId);
     return MealsUtil.getFilteredWithExceed(
             service.getBetweenDates(
-                    startDate != null ? startDate : DateTimeUtil.MIN_DATE, endDate != null ? endDate : DateTimeUtil.MAX_DATE, userId
-                    ), startTime != null ? startTime : LocalTime.MIN, endTime != null ? endTime : LocalTime.MAX, AuthorizedUser.getCaloriesPerDay()
-    );
+                    startDate != null ? startDate : DateTimeUtil.MIN_DATE,
+                    endDate != null ? endDate : DateTimeUtil.MAX_DATE, userId),
+            startTime != null ? startTime : LocalTime.MIN,
+            endTime != null ? endTime : LocalTime.MAX, AuthorizedUser.getCaloriesPerDay());
   }
 }
 

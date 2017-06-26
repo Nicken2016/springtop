@@ -50,6 +50,7 @@
           p:cacheSeconds="60"
           p:defaultEncoding="UTF-8">
         <property name="basenames" value="file:///#{systemEnvironment['SPRING_ROOT']}/config/messages/app"/>
+        <property name="fallbackToSystemLocale" value="false"/>
     </bean>
 
 </beans>

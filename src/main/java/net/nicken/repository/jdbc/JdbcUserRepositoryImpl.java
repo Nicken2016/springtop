@@ -12,16 +12,14 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Repository
@@ -93,32 +91,16 @@ public class JdbcUserRepositoryImpl implements UserRepository {
 
     @Override
     public List<User> getAll() {
-//        return jdbcTemplate.query("SELECT * FROM users ORDER BY name, email", ROW_MAPPER);
-        class UserRole{
-            final private int userId;
-            final private Role role;
 
-            private UserRole(int userId, Role role){
-                this.userId = userId;
-                this.role = role;
-            }
-
-            public int getUserId() {
-                return userId;
-            }
-
-            public Role getRole() {
-                return role;
-            }
+        SqlRowSet rowSet = jdbcTemplate.queryForRowSet("SELECT * FROM user_roles");
+        Map<Integer, Set<Role>> map = new HashMap<>();
+        while(rowSet.next()){
+            Set<Role> roles = map.computeIfAbsent(rowSet.getInt("user_id"), userId -> EnumSet.noneOf(Role.class));
+            roles.add(Role.valueOf(rowSet.getString("role")));
         }
 
-        List<UserRole> queryList = jdbcTemplate.query("SELECT role, user_id FROM user_roles",
-                (rs, rowNum) -> new UserRole(rs.getInt("user_id"), Role.valueOf(rs.getString("role"))));
-        Map<Integer, List<Role>> userRolesMap = queryList.stream()
-                .collect(Collectors.groupingBy(UserRole::getUserId, Collectors.mapping(UserRole::getRole, Collectors.toList())));
-
         List<User> users = jdbcTemplate.query("SELECT * FROM users ORDER BY name, email", ROW_MAPPER);
-        users.forEach(u -> u.setRoles(userRolesMap.get(u.getId())));
+        users.forEach(u -> u.setRoles(map.get(u.getId())));
         return users;
     }
 

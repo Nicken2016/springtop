@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <html>
@@ -8,15 +9,15 @@
 <jsp:include page="fragments/bodyHeader.jsp"/>
 
 <section>
-    <h3><fmt:message key="users.title"/></h3>
+    <h3><spring:message code="users.title"/></h3>
     <table border="1" cellpadding="8" cellspacing="0">
         <thead>
         <tr>
-            <th><fmt:message key="users.name"/></th>
-            <th><fmt:message key="users.email"/></th>
-            <th><fmt:message key="users.roles"/></th>
-            <th><fmt:message key="users.active"/></th>
-            <th><fmt:message key="users.registered"/></th>
+            <th><spring:message code="users.name"/></th>
+            <th><spring:message code="users.email"/></th>
+            <th><spring:message code="users.roles"/></th>
+            <th><spring:message code="users.active"/></th>
+            <th><spring:message code="users.registered"/></th>
         </tr>
         </thead>
         <c:forEach items="${users}" var="user">
