@@ -2,6 +2,7 @@ package net.nicken;
 
 import net.nicken.matcher.ModelMatcher;
 import net.nicken.model.Meal;
+import net.nicken.to.MealWithExceed;
 
 import java.time.Month;
 import java.util.Arrays;
@@ -11,8 +12,8 @@ import static java.time.LocalDateTime.of;
 import static net.nicken.model.BaseEntity.START_SEQ;
 
 public class MealTestData {
-//    public static final ModelMatcher<Meal> MATCHER = new ModelMatcher<>();
     public static final ModelMatcher<Meal> MATCHER = ModelMatcher.of(Meal.class);
+    public static final ModelMatcher<MealWithExceed> MATCHER_WITH_EXCEED = ModelMatcher.of(MealWithExceed.class);
 
     public static final int MEAL1_ID = START_SEQ + 2;
     public static final int ADMIN_MEAL_ID = START_SEQ + 8;

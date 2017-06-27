@@ -25,12 +25,12 @@ public class MealsUtil {
 
         return meals.stream()
                 .filter(m -> DateTimeUtil.isBetweenTime(m.getTime(), startTime, endTime))
-                .map(m -> createMealWithExceed(m, map.get(m.getDate()) > calories))
+                .map(m -> createWithExceed(m, map.get(m.getDate()) > calories))
                 .collect(Collectors.toList());
     }
 
 
-    private static MealWithExceed createMealWithExceed(Meal meal, boolean exceed){
+    public static MealWithExceed createWithExceed(Meal meal, boolean exceed){
         return new MealWithExceed(meal.getId(), meal.getDateTime(), meal.getDescription(), meal.getCalories(), exceed);
     }
 
@@ -42,7 +42,7 @@ public class MealsUtil {
 
         meals.forEach(meal -> {
             if(DateTimeUtil.isBetweenTime(meal.getTime(), startTime, endTime)){
-                mealWithExceeds.add(createMealWithExceed(meal, caloriesSumByDate.get(meal.getDate()) > calories));
+                mealWithExceeds.add(createWithExceed(meal, caloriesSumByDate.get(meal.getDate()) > calories));
             }
         });
         return mealWithExceeds;
