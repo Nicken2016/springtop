@@ -41,7 +41,7 @@
         <jackon-json.version>2.8.6</jackon-json.version>
 
         <!--webjars-->
-        <webjars-bootsrap.vrsion>3.3.7-1</webjars-bootsrap.vrsion>
+        <webjars-bootsrap.version>3.3.7-1</webjars-bootsrap.version>
         <webjars-jquery.version>3.1.1-1</webjars-jquery.version>
         <webjars-datetimepicker.version>2.5.4</webjars-datetimepicker.version>
         <webjars-noty.version>2.3.8</webjars-noty.version>
@@ -208,7 +208,7 @@
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>bootstrap</artifactId>
-            <version>${webjars-bootsrap.vrsion}</version>
+            <version>${webjars-bootsrap.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.webjars</groupId>
