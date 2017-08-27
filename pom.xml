@@ -15,12 +15,12 @@
         <tomcat.version>8.5.9</tomcat.version>
 
         <!--Spring-->
-        <spring.version>4.3.5.RELEASE</spring.version>
-        <spring-data-jpa.version>1.10.6.RELEASE</spring-data-jpa.version>
+        <spring.version>4.3.6.RELEASE</spring.version>
+        <spring-data-jpa.version>1.11.0.RELEASE</spring-data-jpa.version>
 
         <!--Logging-->
-        <logging.version>1.1.2</logging.version>
-        <slf4j.version>1.7.7</slf4j.version>
+        <logback.version>1.1.10</logback.version>
+        <slf4j.version>1.7.22</slf4j.version>
 
         <!--Test-->
         <junit.version>4.12</junit.version>
@@ -31,8 +31,8 @@
         <hsqldb.version>2.3.4</hsqldb.version>
 
         <!--Hibernate version-->
-        <hibernate.version>5.2.6.Final</hibernate.version>
-        <hibernate-valodator.version>5.3.4.Final</hibernate-valodator.version>
+        <hibernate.version>5.2.7.Final</hibernate.version>
+        <hibernate-valodator.version>5.4.0.Final</hibernate-valodator.version>
 
         <!--Tools-->
         <ehcache.version>2.10.3</ehcache.version>
@@ -72,7 +72,7 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>${logging.version}</version>
+            <version>${logback.version}</version>
             <scope>runtime</scope>
         </dependency>
 

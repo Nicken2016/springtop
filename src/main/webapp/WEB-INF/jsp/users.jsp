@@ -16,7 +16,7 @@
             <h3><spring:message code="users.title"/></h3>
 
             <div class="view-box">
-                <a class="btn btn-sm btn-info" onclick="add()">
+                <a class="btn btn-info" onclick="add()">
                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                 </a>
 
@@ -43,7 +43,7 @@
                                        <c:if test="${user.enabled}">checked</c:if> id="${user.id}"/>
                             </td>
                             <td><fmt:formatDate value="${user.registered}" pattern="dd-MMMM-yyyy"/></td>
-                            <td><a class="btn btn-xs btn-primary edit" id="${user.id}">
+                            <td><a class="btn btn-xs btn-primary">
                                 <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                             </a></td>
                             <td><a class="btn btn-xs btn-danger delete" id="${user.id}">
@@ -66,7 +66,7 @@
                 <h2 class="modal-title"><spring:message code="users.add"/></h2>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal" method="post" id="detailsForm">
+                <form class="form-horizontal" id="detailsForm">
                     <input type="text" hidden="hidden" id="id" name="id">
 
                     <div class="form-group">
