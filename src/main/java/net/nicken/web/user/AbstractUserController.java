@@ -2,6 +2,7 @@ package net.nicken.web.user;
 
 import net.nicken.model.User;
 import net.nicken.service.UserService;
+import net.nicken.to.UserTo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,11 @@ public abstract class AbstractUserController {
         checkIdConsistent(user, id);
         log.info("update = "+user);
         service.update(user);
+    }
+
+    public void update(UserTo userTo){
+        log.info("update " + userTo);
+        service.update(userTo);
     }
 
     public User getByMail(String email){

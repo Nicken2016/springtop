@@ -2,6 +2,8 @@ package net.nicken.service;
 
 import net.nicken.model.User;
 import net.nicken.repository.UserRepository;
+import net.nicken.to.UserTo;
+import net.nicken.util.UserUtil;
 import net.nicken.util.ValidationUtil;
 import net.nicken.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +59,14 @@ public class UserServiceImpl implements UserService{
     public void update(User user) {
         Assert.notNull(user, "user must not be null");
         repository.save(user);
+    }
+
+    @CacheEvict(value = "user", allEntries = true)
+    @Transactional
+    @Override
+    public void update(UserTo userTo) {
+        User user = get(userTo.getId());
+        repository.save(UserUtil.updateFromTo(user, userTo));
     }
 
     @CacheEvict(value = "users", allEntries = true)
