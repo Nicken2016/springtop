@@ -5,7 +5,7 @@
 <html>
 <jsp:include page="fragments/headTag.jsp"/>
 <body>
-<script type="text/javascript" src="resources/js/dataTablesUtil.js" defer></script>
+<script type="text/javascript" src="resources/js/datatablesUtil.js" defer></script>
 <script type="text/javascript" src="resources/js/mealDatatables.js" defer></script>
 <jsp:include page="fragments/bodyHeader.jsp"/>
 
@@ -53,6 +53,9 @@
                         </form>
                     </div>
                     <div class="panel-footer text-right">
+                        <a class="btn btn-danger" type="button" onclick="clearFilter()">
+                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                        </a>
                         <a class="btn btn-primary" type="button" onclick="updateTable()">
                             <span class="glyphicon glyphicon-filter" aria-hidden="true"></span>
                         </a>
