@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 
 public class MealsUtil {
 
-    public static final int DEFAULT_CALORIES_PER_DAY = 2000;
 
     public static List<MealWithExceed> getWithExceeded(Collection<Meal> meals, int calories){
         return getFilteredWithExceed(meals, LocalTime.MIN, LocalTime.MAX, calories);

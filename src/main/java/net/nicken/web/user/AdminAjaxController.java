@@ -2,6 +2,8 @@ package net.nicken.web.user;
 
 import net.nicken.model.Role;
 import net.nicken.model.User;
+import net.nicken.to.UserTo;
+import net.nicken.util.UserUtil;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,16 +27,9 @@ public class AdminAjaxController extends AbstractUserController {
     }
 
     @PostMapping
-    public void createOrUpdate(@RequestParam("id") Integer id,
-                               @RequestParam("name") String name,
-                               @RequestParam("email") String email,
-                               @RequestParam("password") String password) {
-
-        User user = new User(id, name, email, password, Role.ROLE_USER);
-        if (user.isNew()) {
-            super.create(user);
-        } else {
-            super.update(user, id);
+    public void createOrUpdate(UserTo userTo) {
+        if (userTo.isNew()){
+            super.create(UserUtil.createNewFromTo(userTo));
         }
     }
 

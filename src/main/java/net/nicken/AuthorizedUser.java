@@ -1,8 +1,7 @@
 package net.nicken;
 
 import net.nicken.model.BaseEntity;
-import net.nicken.model.Role;
-import net.nicken.util.MealsUtil;
+import net.nicken.util.UserUtil;
 
 import java.util.Set;
 
@@ -18,6 +17,6 @@ public class AuthorizedUser {
     }
 
     public static int getCaloriesPerDay(){
-        return MealsUtil.DEFAULT_CALORIES_PER_DAY;
+        return UserUtil.DEFAULT_CALORIES_PER_DAY;
     }
 }
