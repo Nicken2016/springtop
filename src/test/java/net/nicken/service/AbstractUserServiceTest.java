@@ -4,6 +4,7 @@ import net.nicken.model.Role;
 import net.nicken.model.User;
 
 import net.nicken.util.exception.NotFoundException;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -85,6 +86,14 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest{
         update.setRoles(Collections.singletonList(Role.ROLE_ADMIN));
         service.update(update);
         MATCHER.assertEquals(update, service.get(USER_ID));
+    }
+
+    @Test
+    public void testSetEnabledEquals(){
+        service.enable(USER_ID, false);
+        Assert.assertFalse(service.get(USER_ID).isEnabled());
+        service.enable(USER_ID, true);
+        Assert.assertTrue(service.get(USER_ID).isEnabled());
     }
 }
 
