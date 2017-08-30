@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService{
         repository.save(user);
     }
 
-    @CacheEvict(value = "user", allEntries = true)
+    @CacheEvict(value = "users", allEntries = true)
     @Transactional
     @Override
     public void update(UserTo userTo) {
