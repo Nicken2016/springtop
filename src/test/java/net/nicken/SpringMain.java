@@ -13,6 +13,9 @@ import java.time.Month;
 import java.util.Arrays;
 import java.util.List;
 
+import static net.nicken.TestUtil.mockAuthorize;
+import static net.nicken.UserTestData.USER;
+
 public class SpringMain {
 
     public static void main(String[] args) {
@@ -21,6 +24,8 @@ public class SpringMain {
             appCtx.getEnvironment().setActiveProfiles(Profiles.getActiveDbProfile(), Profiles.DB_IMPLEMENTATION);
             appCtx.load("spring/spring-app.xml", "spring/mock.xml");
             appCtx.refresh();
+
+            mockAuthorize(USER);
 
             System.out.println("Bean definition names: "+Arrays.toString(appCtx.getBeanDefinitionNames()));
             AdminRestController adminUserController = appCtx.getBean(AdminRestController.class);
@@ -38,7 +43,6 @@ public class SpringMain {
             System.out.println("--");
         }
     }
-
 
 
 
