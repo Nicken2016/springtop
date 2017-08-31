@@ -1,5 +1,6 @@
 package net.nicken.service;
 
+import net.nicken.AuthorizedUser;
 import net.nicken.model.User;
 import net.nicken.repository.UserRepository;
 import net.nicken.to.UserTo;
@@ -10,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -19,8 +23,9 @@ import java.util.List;
 import static net.nicken.util.ValidationUtil.checkNotFound;
 import static net.nicken.util.ValidationUtil.checkNotFoundWithId;
 
-@Service
-public class UserServiceImpl implements UserService{
+@Service("userService")
+public class UserServiceImpl implements UserService, UserDetailsService{
+
     @Autowired
     private UserRepository repository;
 
@@ -85,7 +90,17 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User u = repository.getByEmail(email.toLowerCase());
+        if (u == null){
+            throw new UsernameNotFoundException("User " + email + " is not found");
+        }
+        return new AuthorizedUser(u);
+    }
+
+    @Override
     public User getWithMeals(int id) {
         return ValidationUtil.checkNotFoundWithId(repository.getWithMeals(id), id);
     }
+
 }
