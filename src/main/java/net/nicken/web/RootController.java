@@ -31,11 +31,7 @@ public class RootController {
     }
 
     @GetMapping(value = "/login")
-    public String login(ModelMap model,
-                        @RequestParam(value = "error", required = false) boolean error,
-                        @RequestParam(value = "message", required = false) String message){
-        model.put("error", error);
-        model.put("message", message);
+    public String login(){
         return "login";
     }
 
