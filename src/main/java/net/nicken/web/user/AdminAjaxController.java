@@ -1,6 +1,6 @@
 package net.nicken.web.user;
 
-import net.nicken.model.Role;
+
 import net.nicken.model.User;
 import net.nicken.to.UserTo;
 import net.nicken.util.UserUtil;
@@ -24,6 +24,7 @@ public class AdminAjaxController extends AbstractUserController {
         return super.getAll();
     }
 
+    @Override
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public User get(@PathVariable("id") int id){
         return super.get(id);
