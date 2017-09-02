@@ -16,10 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class RootController {
 
 
-    @Autowired
-    private MealService mealService;
-
-
     @GetMapping("/")
     public String root(){
         return "redirect:meals";
@@ -36,9 +32,7 @@ public class RootController {
     }
 
     @GetMapping("/meals")
-    public String meals(Model model){
-        model.addAttribute("meals",
-                MealsUtil.getWithExceeded(mealService.getAll(AuthorizedUser.id()), AuthorizedUser.getCaloriesPerDay()));
+    public String meals(){
         return "meals";
     }
 }
