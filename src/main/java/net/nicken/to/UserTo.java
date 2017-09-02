@@ -1,5 +1,6 @@
 package net.nicken.to;
 
+import net.nicken.util.HasId;
 import net.nicken.util.UserUtil;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
@@ -9,7 +10,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 
-public class UserTo implements Serializable{
+public class UserTo implements HasId, Serializable{
     private static final long serialVersionUID = 1L;
 
     private Integer id;
@@ -40,10 +41,12 @@ public class UserTo implements Serializable{
         this.caloriesPerDay = caloriesPerDay;
     }
 
+    @Override
     public Integer getId() {
         return id;
     }
 
+    @Override
     public void setId(Integer id) {
         this.id = id;
     }
@@ -72,6 +75,7 @@ public class UserTo implements Serializable{
         this.password = password;
     }
 
+    @Override
     public boolean isNew(){
         return id == null;
     }

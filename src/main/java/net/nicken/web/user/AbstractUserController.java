@@ -1,5 +1,6 @@
 package net.nicken.web.user;
 
+import net.nicken.AuthorizedUser;
 import net.nicken.model.User;
 import net.nicken.service.UserService;
 import net.nicken.to.UserTo;
@@ -47,6 +48,7 @@ public abstract class AbstractUserController {
 
     public void update(UserTo userTo){
         log.info("update " + userTo);
+        checkIdConsistent(userTo, AuthorizedUser.id());
         service.update(userTo);
     }
 
