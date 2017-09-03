@@ -42,12 +42,6 @@ public class InMemoryAdminRestControllerTest {
     }
 
     @Test
-    public void testCreate() throws Exception{
-        controller.create(new User(null, "Name", "email@ya.ru", "password", Role.ROLE_USER));
-    }
-
-
-    @Test
     public void testDelete()throws Exception{
         controller.delete(UserTestData.USER_ID);
         Collection<User> users = controller.getAll();

@@ -1,9 +1,10 @@
 package net.nicken.web.user;
 
+import net.nicken.to.UserTo;
+import net.nicken.util.UserUtil;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import net.nicken.TestUtil;
-import net.nicken.model.Role;
 import net.nicken.model.User;
 import net.nicken.web.AbstractControllerTest;
 import net.nicken.web.json.JsonUtil;
@@ -44,14 +45,15 @@ public class ProfileRestControllerTest extends AbstractControllerTest{
 
     @Test
     public void testUpdate() throws Exception {
-        User updated = new User(USER_ID, "newUser", "newemail@ya.ru", "newPassword", Role.ROLE_USER);
+        UserTo updatedTo = new UserTo(null, "newName", "newemail@ya.ru", "newPassword", 1500);
+
         mockMvc.perform(put(REST_URL).contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(USER))
-                .content(JsonUtil.writeValue(updated)))
+                .content(JsonUtil.writeValue(updatedTo)))
                 .andDo(print())
                 .andExpect(status().isOk());
 
-        MATCHER.assertEquals(updated, new User(userService.getByEmail("newemail@ya.ru")));
+        MATCHER.assertEquals(UserUtil.updateFromTo(new User(USER), updatedTo), userService.getByEmail("newemail@ya.ru"));
 
     }
 
