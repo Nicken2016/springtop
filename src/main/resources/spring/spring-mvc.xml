@@ -70,4 +70,8 @@
         <property name="basenames" value="file:///#{systemEnvironment['SPRING_ROOT']}/config/messages/app"/>
         <property name="fallbackToSystemLocale" value="false"/>
     </bean>
+
+    <mvc:interceptors>
+        <bean class="net.nicken.web.interceptor.ModelInterceptor"/>
+    </mvc:interceptors>
 </beans>
