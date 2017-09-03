@@ -1,14 +1,10 @@
 package net.nicken.web;
 
-import net.nicken.AuthorizedUser;
-import net.nicken.service.MealService;
-import net.nicken.util.MealsUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 
@@ -21,6 +17,7 @@ public class RootController {
         return "redirect:meals";
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/users")
     public String users(){
         return "users";
