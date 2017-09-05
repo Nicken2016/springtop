@@ -40,6 +40,7 @@ public class AdminAjaxController extends AbstractUserController {
     @PostMapping
 //    public void createOrUpdate(UserTo userTo) {
     public ResponseEntity<String> createOrUpdate(@Valid UserTo userTo, BindingResult result){
+//        TODO change to exchange handler
         if (result.hasErrors()) {
             return ValidationUtil.getErrorResponse(result);
         }
