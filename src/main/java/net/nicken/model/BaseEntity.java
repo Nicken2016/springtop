@@ -1,6 +1,6 @@
 package net.nicken.model;
 
-import net.nicken.util.HasId;
+import net.nicken.HasId;
 import org.hibernate.Hibernate;
 
 
@@ -19,7 +19,7 @@ public class BaseEntity implements HasId {
 //    @Column(name = "id", unique = true, nullable = false, columnDefinition = "integer default nextval(global_seq)")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "global_seq")
     @Access(value = AccessType.PROPERTY)
-    protected Integer id;
+    private Integer id;
 
     public BaseEntity() {
     }
@@ -36,11 +36,6 @@ public class BaseEntity implements HasId {
     @Override
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    @Override
-    public boolean isNew() {
-        return getId() == null;
     }
 
     @Override

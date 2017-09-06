@@ -1,6 +1,7 @@
 package net.nicken.util;
 
 
+import net.nicken.HasId;
 import net.nicken.util.exception.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
