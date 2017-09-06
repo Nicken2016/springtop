@@ -2,6 +2,7 @@ package net.nicken.service;
 
 import net.nicken.ActiveDbProfileResolver;
 import net.nicken.Profiles;
+import net.nicken.util.ValidationUtil;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Rule;
@@ -78,17 +79,7 @@ abstract public class AbstractServiceTest {
             runnable.run();
             Assert.fail("Expected "+ exceptionClass.getName());
         }catch (Exception e){
-            Assert.assertThat(getRootCause(e), instanceOf(exceptionClass));
+            Assert.assertThat(ValidationUtil.getRootCause(e), instanceOf(exceptionClass));
         }
-    }
-
-    public static Throwable getRootCause(Throwable t){
-        Throwable result = t;
-        Throwable cause;
-
-        while (null != (cause = result.getCause()) && (result != cause)){
-            result = cause;
-        }
-    return result;
     }
 }
