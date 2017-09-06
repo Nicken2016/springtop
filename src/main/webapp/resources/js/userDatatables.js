@@ -1,6 +1,6 @@
 var ajaxUrl = 'ajax/admin/users/';
 var datatableApi;
-var editTitleKey = "users.edit";
+var editTitleKey ="users.edit";
 
 function updateTable() {
     $.get(ajaxUrl, updateTableByData);
@@ -23,7 +23,7 @@ function enable(chkbox, id) {
 $(function () {
     datatableApi = $('#datatable').DataTable({
         "ajax": {
-          "url": ajaxUrl,
+            "url": ajaxUrl,
             "dataSrc": ""
         },
         "paging": false,
@@ -73,7 +73,7 @@ $(function () {
                 "render": renderDeleteBtn
             }
         ],
-        "order":[
+        "order": [
             [
                 0,
                 "asc"

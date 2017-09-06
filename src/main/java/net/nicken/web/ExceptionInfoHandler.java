@@ -8,14 +8,13 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
+@ControllerAdvice(annotations = RestController.class)
 public class ExceptionInfoHandler {
-    private static final Logger LOG = LoggerFactory.getLogger(ExceptionInfoHandler.class);
+    private static Logger LOG = LoggerFactory.getLogger(ExceptionInfoHandler.class);
 
     //  http://stackoverflow.com/a/22358422/548473
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
@@ -42,7 +41,7 @@ public class ExceptionInfoHandler {
         return logAndGetErrorInfo(req, e, true);
     }
 
-    public ErrorInfo logAndGetErrorInfo(HttpServletRequest req, Exception e, boolean logException) {
+    public static ErrorInfo logAndGetErrorInfo(HttpServletRequest req, Exception e, boolean logException) {
         if (logException) {
             LOG.error("Exception at request " + req.getRequestURL(), e);
         } else {
@@ -50,6 +49,4 @@ public class ExceptionInfoHandler {
         }
         return new ErrorInfo(req.getRequestURL(), e);
     }
-
-
 }

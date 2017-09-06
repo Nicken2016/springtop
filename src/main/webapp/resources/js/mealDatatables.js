@@ -19,17 +19,17 @@ function updateTable() {
 
 $(function () {
     datatableApi = $("#datatable").DataTable({
-        "ajax":{
+        "ajax": {
             "url": ajaxUrl,
             "dataSrc": ""
         },
         "paging": false,
         "info": true,
-        "columns" : [
+        "columns": [
             {
                 "data": "dateTime",
                 "render": function (date, type, row) {
-                    if (type == 'display'){
+                    if (type == 'display') {
                         return formatDate(date);
                     }
                     return date;
@@ -52,7 +52,7 @@ $(function () {
                 "orderable": false
             }
         ],
-        "order":[
+        "order": [
             [
                 0,
                 "desc"
@@ -64,35 +64,35 @@ $(function () {
         "initComplete": makeEditable
     });
 
-var startDate = $('#startDate');
-var endDate = $('#endDate');
-startDate.datetimepicker({
-    timepicker: false,
-    format: 'Y-m-d',
-    formatDate: 'Y-m-d',
-    onShow: function (ct){
-        this.setOptions({
-            maxDate: endDate.val() ? endDate.val() : false
-        })
-    }
-});
-endDate.datetimepicker({
-    timepicker: false,
-    format: 'Y-m-d',
-    formatDate: 'Y-m-d',
-    onShow: function (ct){
-        this.setOptions({
-            minDate: startDate.val() ? startDate.val() : false
-        })
-    }
-});
+    var startDate = $('#startDate');
+    var endDate = $('#endDate');
+    startDate.datetimepicker({
+        timepicker: false,
+        format: 'Y-m-d',
+        formatDate: 'Y-m-d',
+        onShow: function (ct) {
+            this.setOptions({
+                maxDate: endDate.val() ? endDate.val() : false
+            })
+        }
+    });
+    endDate.datetimepicker({
+        timepicker: false,
+        format: 'Y-m-d',
+        formatDate: 'Y-m-d',
+        onShow: function (ct) {
+            this.setOptions({
+                minDate: startDate.val() ? startDate.val() : false
+            })
+        }
+    });
 
-$('#startTime, #endTime').datetimepicker({
-    datepicker: false,
-    format: 'H:i'
-});
+    $('#startTime, #endTime').datetimepicker({
+        datepicker: false,
+        format: 'H:i'
+    });
 
-$('#dateTime').datetimepicker({
-    format: 'Y-m-d H:i'
-});
+    $('#dateTime').datetimepicker({
+        format: 'Y-m-d H:i'
+    });
 });

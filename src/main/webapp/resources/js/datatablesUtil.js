@@ -5,6 +5,12 @@ function makeEditable() {
     $(document).ajaxError(function (event, jqXHR, options, jsExc) {
         failNoty(event, jqXHR, options, jsExc);
     });
+
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+    $(document).ajaxSend(function(e, xhr, options) {
+        xhr.setRequestHeader(header, token);
+    });
 }
 
 function add(title) {
@@ -14,7 +20,7 @@ function add(title) {
 }
 
 function updateRow(id) {
-    $('modalTitle').html(i18n[editTitleKey]);
+    $('#modalTitle').html(i18n[editTitleKey]);
     $.get(ajaxUrl + id, function (data) {
         $.each(data, function (key, value) {
             form.find("input[name='" + key + "']").val(
@@ -26,7 +32,7 @@ function updateRow(id) {
 }
 
 function formatDate(date) {
-    return date.replace('T',' ').substr(0, 16);
+    return date.replace('T', ' ').substr(0, 16);
 }
 
 function deleteRow(id) {
@@ -60,7 +66,7 @@ function save() {
 var failedNote;
 
 function closeNoty() {
-    if(failedNote){
+    if (failedNote) {
         failedNote.close();
         failedNote = undefined;
     }
@@ -76,11 +82,11 @@ function successNoty(key) {
     });
 }
 
-function failNoty(exent, jqXHR, options, jsExc) {
+function failNoty(event, jqXHR, options, jsExc) {
     closeNoty();
-    var errorInfo = $.parseJSON(jqXHR.responseText)
+    var errorInfo = $.parseJSON(jqXHR.responseText);
     failedNote = noty({
-        text: i18n['common.failed'] + ': ' + jqXHR.statusText + "<br>" + errorInfo.cause + "<br>" + errorInfo.detail,
+        text: i18n['common.failed'] + ': ' + jqXHR.statusText + "<br>"+ errorInfo.cause + "<br>" + errorInfo.detail,
         type: 'error',
         layout: 'bottomRight'
     });
@@ -89,7 +95,7 @@ function failNoty(exent, jqXHR, options, jsExc) {
 function renderEditBtn(data, type, row) {
     if (type == 'display') {
         return '<a class="btn btn-xs btn-primary" onclick="updateRow(' + row.id + ');">' +
-                '<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>';
+            '<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>';
     }
 }
 
@@ -98,5 +104,4 @@ function renderDeleteBtn(data, type, row) {
         return '<a class="btn btn-xs btn-danger" onclick="deleteRow(' + row.id + ');">'+
             '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>';
     }
-
 }

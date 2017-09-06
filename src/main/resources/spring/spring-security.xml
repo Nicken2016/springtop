@@ -17,8 +17,8 @@
     </http>
 
     <http>
-        <intercept-url pattern="/login" access="permitAll"/>
-        <intercept-url pattern="/register" access="permitAll"/>
+        <intercept-url pattern="/login" access="isAnonymous()"/>
+        <intercept-url pattern="/register" access="isAnonymous()"/>
 
         <intercept-url pattern="/**/admin/**" access="hasRole('ROLE_ADMIN')"/>
         <intercept-url pattern="/**" access="isAuthenticated()"/>
@@ -27,7 +27,7 @@
                     authentication-failure-url="/login?error=true"
                     login-processing-url="/spring_security_check"/>
         <logout logout-success-url="/login"/>
-        <csrf disabled="true"/>
+        <!--<csrf disabled="true"/>-->
     </http>
 
     <beans:bean class="net.nicken.util.PasswordUtil" id="passwordEncoder" factory-method="getPasswordEncoder"/>

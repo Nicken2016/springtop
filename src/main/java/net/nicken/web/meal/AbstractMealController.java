@@ -58,7 +58,7 @@ public Meal create(Meal meal){
 
 public List<MealWithExceed> getBetween(LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime){
     int userId = AuthorizedUser.id();
-    LOG.info("getNetween dates {} - {} for time {} = {} for User {}", startDate, endDate, startTime, endTime, userId);
+    LOG.info("getNetween dates {} - {} for time {} - {} for User {}", startDate, endDate, startTime, endTime, userId);
     return MealsUtil.getFilteredWithExceed(
             service.getBetweenDates(
                     startDate != null ? startDate : DateTimeUtil.MIN_DATE,

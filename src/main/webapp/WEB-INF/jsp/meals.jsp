@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fn" uri="http://localhost:8080/springtop/functions" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <jsp:include page="fragments/headTag.jsp"/>
 <body>
@@ -19,10 +20,10 @@
                     <div class="col-sm-7">
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <form class="form-horizontal" id="filter">
+                        <form:form class="form-horizontal" id="filter">
                             <div class="form-group">
                                 <label class="control-label col-sm-3" for="startDate"><spring:message
-                                       code="meals.startDate"/>:</label>
+                                        code="meals.startDate"/>:</label>
 
                                 <div class="col-sm-3">
                                     <input class="form-control" name="startDate" id="startDate">
@@ -50,7 +51,7 @@
                                     <input class="form-control" name="endTime" id="endTime">
                                 </div>
                             </div>
-                        </form>
+                        </form:form>
                     </div>
                     <div class="panel-footer text-right">
                         <a class="btn btn-danger" type="button" onclick="clearFilter()">
@@ -91,30 +92,30 @@
                 <h2 class="modal-title" id="modalTitle"></h2>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal" id="detailsForm">
+                <form:form class="form-horizontal" id="detailsForm">
                     <input type="hidden" id="id" name="id">
 
                     <div class="form-group">
                         <label for="dateTime" class="control-label col-xs-3"><spring:message
-                            code="meals.dateTime"/></label>
+                                code="meals.dateTime"/></label>
 
                         <div class="col-xs-9">
                             <input class="form-control" id="dateTime" name="dateTime"
-                                placeholder="<spring:message code="meals.dateTime"/>">
+                                   placeholder="<spring:message code="meals.dateTime"/>">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="description" class="control-label col-xs-3"><spring:message
-                            code="meals.description"/></label>
+                                code="meals.description"/></label>
 
                         <div class="col-xs-9">
                             <input type="text" class="form-control" id="description" name="description"
-                                placeholder="<spring:message code="meals.description"/>">
+                                   placeholder="<spring:message code="meals.description"/>">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="calories" class="control-label col-xs-3"><spring:message
-                            code="meals.calories"/></label>
+                                code="meals.calories"/></label>
 
                         <div class="col-xs-9">
                             <input type="number" class="form-control" id="calories" name="calories" placeholder="1000">
@@ -125,9 +126,9 @@
                             <button class="btn btn-primary" type="button" onclick="save()">
                                 <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                             </button>
-                         </div>
+                        </div>
                     </div>
-                </form>
+                </form:form>
             </div>
         </div>
     </div>
