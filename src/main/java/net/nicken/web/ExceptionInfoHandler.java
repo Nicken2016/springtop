@@ -8,9 +8,14 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.ExcludeSuperclassListeners;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 
 @ControllerAdvice(annotations = RestController.class)
 public class ExceptionInfoHandler {
@@ -32,6 +37,32 @@ public class ExceptionInfoHandler {
     public ErrorInfo conflict(HttpServletRequest req, DataIntegrityViolationException e){
         return logAndGetErrorInfo(req, e, true);
     }
+
+    @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
+    @ExceptionHandler(BindException.class)
+    @ResponseBody
+    @Order(Ordered.HIGHEST_PRECEDENCE + 2)
+    public ErrorInfo bindValidationError(HttpServletRequest req, BindingResult result){
+        return logAndGetValidationErrorInfo(req, result);
+    }
+
+    private ErrorInfo logAndGetValidationErrorInfo(HttpServletRequest req, BindingResult result) {
+        String[] details = result.getFieldErrors().stream()
+                .map(fe -> fe.getField() + ' ' + fe.getDefaultMessage())
+                .toArray(String[]::new);
+
+        LOG.warn("Validation exception at request " + req.getRequestURL() + ": " + Arrays.toString(details));
+        return new ErrorInfo(req.getRequestURL(), "ValidationException", details);
+    }
+
+    @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY) //422
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseBody
+    @Order(Ordered.HIGHEST_PRECEDENCE + 2)
+    public ErrorInfo restValidationError(HttpServletRequest req, MethodArgumentNotValidException e){
+        return logAndGetValidationErrorInfo(req, e.getBindingResult());
+    }
+    
 
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
