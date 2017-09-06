@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 
 @ControllerAdvice(annotations = RestController.class)
+@Order(Ordered.HIGHEST_PRECEDENCE + 5)
 public class ExceptionInfoHandler {
     private static Logger LOG = LoggerFactory.getLogger(ExceptionInfoHandler.class);
 
