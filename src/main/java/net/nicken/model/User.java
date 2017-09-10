@@ -1,5 +1,7 @@
 package net.nicken.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import net.nicken.View;
 import org.hibernate.annotations.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.validator.constraints.Email;
@@ -44,6 +46,7 @@ public class User extends NamedEntity{
     @Column(name = "password", nullable = false)
     @NotBlank
     @Length(min = 5)
+    @JsonView(View.REST.class)
     private String password;
 
     @Column(name = "enabled", nullable = false, columnDefinition = "boot default true")
