@@ -29,7 +29,7 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles(resolver = AllActiveProfileResolver.class)
-public class AbstractControllerTest {
+abstract public class AbstractControllerTest {
 
     public static final CharacterEncodingFilter CHARACTER_ENCODING_FILTER = new CharacterEncodingFilter();
 

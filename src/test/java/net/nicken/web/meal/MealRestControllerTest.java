@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 
 import static net.nicken.MealTestData.*;
@@ -100,6 +101,17 @@ public class MealRestControllerTest extends AbstractControllerTest{
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
         }
+
+    @Test
+    public void testUpdateHtmlUnsafe() throws Exception{
+        Meal invalid = new Meal(MEAL1_ID, LocalDateTime.now(), "<script>alert(123)</script>", 200);
+        mockMvc.perform(put(REST_URL + MEAL1_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(invalid))
+                .with(userHttpBasic(USER)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
 
     @Test
     @Transactional

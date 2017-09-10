@@ -4,8 +4,9 @@ package net.nicken.model;
 import net.nicken.util.DateTimeUtil;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
+import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -39,7 +40,8 @@ public class Meal extends BaseEntity {
     private LocalDateTime dateTime;
 
     @Column(name = "description", nullable = false)
-    @NotEmpty
+    @NotBlank
+    @SafeHtml
     private String description;
 
     @Column(name = "calories", nullable = false)
