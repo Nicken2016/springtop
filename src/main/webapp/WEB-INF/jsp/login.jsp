@@ -8,7 +8,7 @@
 <body>
 <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
-        <div class="navbar-header navbar-brand"><spring:message code="app.title"/> </div>
+        <div class="navbar-header navbar-brand"><spring:message code="app.title"/></div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li>
@@ -34,7 +34,7 @@
     <div class="container">
         <c:if test="${param.error}">
             <div class="error">
-                ${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}
+                    ${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}
             </div>
         </c:if>
         <c:if test="${not empty param.message}">
@@ -95,7 +95,7 @@
     function setCredentials(username, password) {
         $('input[name="username"]').val(username);
         $('input[name="password"]').val(password);
-        }
+    }
 </script>
 </body>
 </html>

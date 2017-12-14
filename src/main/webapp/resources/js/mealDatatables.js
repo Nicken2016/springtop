@@ -18,7 +18,7 @@ function updateTable() {
 }
 
 $(function () {
-    datatableApi = $("#datatable").DataTable(extendsOpts({
+    datatableApi = $('#datatable').DataTable(extendsOpts({
         "columns": [
             {
                 "data": "dateTime",
